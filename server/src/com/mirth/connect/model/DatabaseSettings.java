@@ -63,6 +63,7 @@ public class DatabaseSettings extends AbstractSettings implements Serializable, 
 
     private boolean splitReadWrite;
     private boolean writePoolCache;
+    private boolean registerPoolMBeans;
 
     private String database;
     private String databaseUrl;
@@ -104,6 +105,14 @@ public class DatabaseSettings extends AbstractSettings implements Serializable, 
 
     public void setWritePoolCache(boolean writePoolCache) {
         this.writePoolCache = writePoolCache;
+    }
+
+    public boolean isRegisterPoolMBeans(){
+      return registerPoolMBeans;
+    }
+
+    public void setRegisterPoolMBeans(boolean registerPoolMBeans) {
+      this.registerPoolMBeans = registerPoolMBeans;
     }
 
     public String getDatabase() {
@@ -262,6 +271,7 @@ public class DatabaseSettings extends AbstractSettings implements Serializable, 
     public void setProperties(Properties properties) {
         setSplitReadWrite(Boolean.parseBoolean(properties.getProperty(DatabaseConstants.DATABASE_ENABLE_READ_WRITE_SPLIT)));
         setWritePoolCache(Boolean.parseBoolean(properties.getProperty(DatabaseConstants.DATABASE_WRITE_POOL_CACHE)));
+        setRegisterPoolMBeans(Boolean.parseBoolean(properties.getProperty(DatabaseConstants.DATABASE_REGISTER_POOL_MBEANS)));
 
         setDatabase(properties.getProperty(DatabaseConstants.DATABASE));
         setDatabaseUrl(properties.getProperty(DatabaseConstants.DATABASE_URL));
@@ -292,6 +302,8 @@ public class DatabaseSettings extends AbstractSettings implements Serializable, 
         configuration.setProperty(DatabaseConstants.DATABASE_ENABLE_READ_WRITE_SPLIT, Boolean.toString(splitReadWrite));
 
         configuration.setProperty(DatabaseConstants.DATABASE_WRITE_POOL_CACHE, Boolean.toString(writePoolCache));
+        
+        configuration.setProperty(DatabaseConstants.DATABASE_REGISTER_POOL_MBEANS, Boolean.toString(registerPoolMBeans));
 
         if (getDirBase() != null) {
             configuration.setProperty(DIR_BASE, getDirBase());

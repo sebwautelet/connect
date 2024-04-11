@@ -332,8 +332,8 @@ public class DatabaseConnectionPoolTests {
         if (!USE_REAL_DATABASE_CONNECTIONS) {
             connection = createConnection(databaseSettings.getDatabase());
             readOnlyConnection = createConnection(StringUtils.defaultIfBlank(databaseSettings.getDatabaseReadOnly(), databaseSettings.getDatabase()));
-            doReturn(createPool(connection)).when(donkeyCP).createConnectionPool(anyString(), anyString(), anyString(), anyString(), anyString(), any(), anyBoolean(), anyString(), anyInt(), eq(false));
-            doReturn(createPool(readOnlyConnection)).when(donkeyCP).createConnectionPool(anyString(), anyString(), anyString(), anyString(), anyString(), any(), anyBoolean(), anyString(), anyInt(), eq(true));
+            doReturn(createPool(connection)).when(donkeyCP).createConnectionPool(anyString(), anyString(), anyString(), anyString(), anyString(), any(), anyBoolean(), anyString(), anyBoolean(), anyInt(), eq(false));
+            doReturn(createPool(readOnlyConnection)).when(donkeyCP).createConnectionPool(anyString(), anyString(), anyString(), anyString(), anyString(), any(), anyBoolean(), anyString(), anyBoolean(), anyInt(), eq(true));
         }
 
         Injector donkeyConnectionPoolsInjector = Guice.createInjector(new AbstractModule() {

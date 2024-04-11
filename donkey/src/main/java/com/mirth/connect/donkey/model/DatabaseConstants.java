@@ -13,6 +13,7 @@ public class DatabaseConstants {
 
     public static final String DATABASE_ENABLE_READ_WRITE_SPLIT = "database.enable-read-write-split";
     public static final String DATABASE_WRITE_POOL_CACHE = "database.write-pool-cache";
+    public static final String DATABASE_REGISTER_POOL_MBEANS = "database.register-pool-mbeans";
 
     public static final String DATABASE = "database";
     public static final String DATABASE_URL = "database.url";

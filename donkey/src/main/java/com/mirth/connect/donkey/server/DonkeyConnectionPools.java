@@ -62,6 +62,7 @@ public class DonkeyConnectionPools {
             String pool = dbProperties.getProperty(DatabaseConstants.DATABASE_POOL);
             boolean jdbc4 = Boolean.parseBoolean(dbProperties.getProperty(DatabaseConstants.DATABASE_JDBC4));
             String testQuery = dbProperties.getProperty(DatabaseConstants.DATABASE_TEST_QUERY);
+            boolean registerPoolMBeans = Boolean.parseBoolean(dbProperties.getProperty(DatabaseConstants.DATABASE_REGISTER_POOL_MBEANS));
             int maxConnections;
 
             try {
@@ -70,7 +71,7 @@ public class DonkeyConnectionPools {
                 throw new Exception("Failed to read the " + DatabaseConstants.DATABASE_MAX_CONNECTIONS + " configuration property");
             }
 
-            connectionPool = createConnectionPool(database, driver, url, username, password, pool, jdbc4, testQuery, maxConnections, false);
+            connectionPool = createConnectionPool(database, driver, url, username, password, pool, jdbc4, testQuery, registerPoolMBeans, maxConnections, false);
 
             boolean splitReadWrite = Boolean.parseBoolean(dbProperties.getProperty(DatabaseConstants.DATABASE_ENABLE_READ_WRITE_SPLIT));
 
@@ -91,7 +92,7 @@ public class DonkeyConnectionPools {
                     throw new Exception("Failed to read the " + DatabaseConstants.DATABASE_READONLY_MAX_CONNECTIONS + " configuration property");
                 }
 
-                readOnlyConnectionPool = createConnectionPool(readOnlyDatabase, readOnlyDriver, readOnlyUrl, readOnlyUsername, readOnlyPassword, readOnlyPool, readOnlyJdbc4, readOnlyTestQuery, readOnlyMaxConnections, true);
+                readOnlyConnectionPool = createConnectionPool(readOnlyDatabase, readOnlyDriver, readOnlyUrl, readOnlyUsername, readOnlyPassword, readOnlyPool, readOnlyJdbc4, readOnlyTestQuery, registerPoolMBeans, readOnlyMaxConnections, true);
             } else {
                 readOnlyConnectionPool = connectionPool;
             }
@@ -100,7 +101,7 @@ public class DonkeyConnectionPools {
         }
     }
 
-    public ConnectionPool createConnectionPool(String database, String driver, String url, String username, String password, String pool, boolean jdbc4, String testQuery, int maxConnections, boolean readOnly) throws Exception {
+    public ConnectionPool createConnectionPool(String database, String driver, String url, String username, String password, String pool, boolean jdbc4, String testQuery, boolean registerMBeans, int maxConnections, boolean readOnly) throws Exception {
         if (driver != null) {
             Class.forName(driver);
         }
@@ -108,7 +109,7 @@ public class DonkeyConnectionPools {
         if (StringUtils.equalsIgnoreCase(pool, "DBCP")) {
             return new DBCPConnectionPool(url, username, password, maxConnections, readOnly);
         } else {
-            return new HikariConnectionPool(driver, url, username, password, maxConnections, jdbc4, testQuery, readOnly);
+            return new HikariConnectionPool(driver, url, username, password, maxConnections, jdbc4, testQuery, registerMBeans, readOnly);
         }
     }
 }
